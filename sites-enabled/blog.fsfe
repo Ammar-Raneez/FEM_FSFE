@@ -2,11 +2,13 @@ server {
 	server_name blog.ammarthedev.online;
 
 	location / {
+		# Allow websocket connections
 		proxy_set_header Upgrade $http_upgrade;
 		proxy_set_header Connection "upgrade";
 		proxy_pass http://localhost:3000;
 	}
 
+    # Set SSL certificate
     listen [::]:443 http2 ssl; # managed by Certbot
     listen 443 http2 ssl; # managed by Certbot
     ssl_certificate /etc/letsencrypt/live/ammarthedev.online/fullchain.pem; # managed by Certbot
