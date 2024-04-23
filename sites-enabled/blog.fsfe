@@ -1,0 +1,30 @@
+server {
+	server_name blog.ammarthedev.online;
+
+	location / {
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
+		proxy_pass http://localhost:3000;
+	}
+
+    listen [::]:443 http2 ssl; # managed by Certbot
+    listen 443 http2 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/ammarthedev.online/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/ammarthedev.online/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = blog.ammarthedev.online) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	listen 80;
+	listen [::]:80;
+	server_name blog.ammarthedev.online;
+    return 404; # managed by Certbot
+
+
+}
